@@ -101,15 +101,19 @@
 
         .game-selector {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .game-grid {
             display: flex;
             flex-direction: column;
             align-items: center;
-
+            justify-content: center;
             gap: 20px;
             margin-top: 20px;
+            width: 100%;
         }
 
         .game-card {
@@ -122,6 +126,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            width: 100%;
+            max-width: 300px;
+            min-width: 250px;
         }
 
         .game-card:hover {
@@ -173,8 +180,38 @@
         }
 
         @media (max-width: 600px) {
-            .game-grid {
-                grid-template-columns: 1fr;
+            .game-card {
+                max-width: 280px;
+                min-width: 220px;
+                padding: 20px;
+            }
+            
+            .game-icon {
+                font-size: 2.5rem;
+            }
+            
+            .game-card h4 {
+                font-size: 1.2rem;
+            }
+            
+            .game-card p {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-card {
+                max-width: 260px;
+                min-width: 200px;
+                padding: 18px;
+            }
+            
+            .game-icon {
+                font-size: 2.2rem;
+            }
+            
+            .game-card h4 {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -183,7 +220,7 @@
     <h1>HuijaliPewi</h1>
 
     <div id="welcomeArea">
-        <h2>Tervetuloa Firesmith Studios peleihin!</h2>
+        <h2>FSM Pelit</h2>
         <p class="description">
             Valitse peli, jota haluat pelata. Kaikki pelimme ovat suunniteltu ystävien kanssa pelaamiseen ja toimivat offline-tilassa.
         </p>

@@ -2,111 +2,366 @@
 <html lang="fi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huijari peli</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Huijari peli</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #1e1e2e;
             color: #ffffff;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            justify-content: center;
+            gap: 15px;
+            justify-content: flex-start;
             align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            color: #ff6b6b;
+            margin-top: 50px;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        h2 {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-bottom: 12px;
+            color: #ffcc00;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        h3 {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            margin-bottom: 8px;
+            color: #ffcc00;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        p {
+            margin: 8px 0;
+            word-wrap: break-word;
+            hyphens: auto;
         }
 
         body div {
             background: #2e2e3e;
-            padding: 20px;
+            padding: clamp(15px, 4vw, 25px);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 85%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
         }
 
         input, button {
-            width: 95%;
-            padding: 10px;
-            margin-top: 10px;
+            width: 100%;
+            max-width: 400px;
+            padding: clamp(10px, 3vw, 12px);
+            margin-top: 8px;
             border: none;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: all 0.3s ease;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         input {
             background: #3e3e4e;
             color: white;
+            border: 2px solid transparent;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: #4e4e5e;
         }
 
         button {
             background: #ff6b6b;
             color: white;
             cursor: pointer;
-            width: 95%;
+            font-weight: bold;
+            white-space: normal;
+            word-wrap: break-word;
         }
 
         button:hover {
             background: #ff4f4f;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #4e4e5e;
+            margin-top: 8px;
+        }
+
+        button.secondary:hover {
+            background: #5e5e6e;
         }
 
         #countdown {
-            font-size: 1.5rem;
-            margin-top: 20px;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-top: 15px;
             color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
         }
 
         ul {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            margin: 0;
+            padding-left: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
         }
+
         ul li {
             text-align: left;
             color: rgb(216, 216, 216);
+            line-height: 1.4;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .player-info {
+            background: #3e3e4e;
+            padding: clamp(12px, 3vw, 15px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #ff6b6b;
+            width: 100%;
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+
+        .card-display {
+            background: #4e4e5e;
+            padding: clamp(15px, 4vw, 20px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border: 2px solid #ffcc00;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .progress-indicator {
+            background: #3e3e4e;
+            padding: clamp(8px, 2vw, 10px);
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            color: #ffcc00;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: clamp(8px, 2vw, 10px);
+            border-radius: 5px;
+            margin: 8px 0;
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            position: fixed;
+            top: clamp(10px, 3vw, 20px);
+            left: clamp(10px, 3vw, 20px);
+            background: #4e4e5e;
+            color: white;
+            border: none;
+            padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 15px);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            z-index: 1000;
+            max-width: 120px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .back-button:hover {
+            background: #5e5e6e;
+        }
+
+        .game-end {
+            background: #4e4e5e;
+            padding: clamp(15px, 4vw, 20px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border: 2px solid #ffcc00;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        .copyright {
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+                gap: 12px;
+            }
+            
+            body div {
+                width: 100%;
+                padding: clamp(12px, 3vw, 20px);
+                margin: 0;
+            }
+            
+            h1 {
+                margin-top: 40px;
+            }
+            
+            input, button {
+                max-width: 100%;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            ul, .player-info, .card-display, .progress-indicator, .error-message, .game-end {
+                max-width: 100%;
+            }
+
+            .back-button {
+                max-width: 100px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 5px;
+            }
+            
+            body div {
+                padding: 12px;
+            }
+            
+            h1 {
+                margin-top: 35px;
+            }
+            
+            .back-button {
+                top: 8px;
+                left: 8px;
+                padding: 6px 10px;
+                font-size: 0.75rem;
+                max-width: 90px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>HuijaliPewi</h1>
+    <button class="back-button" onclick="goBack()" id="backBtn" style="display: none;">← Takaisin</button>
+    
+    <h1>Huijari Peli</h1>
 
     <div id="startArea">
-        <label>Pelaajien määrä (3–8):</label><br>
-        <input type="number" id="numPlayers" min="3" max="8"><br>
+        <h2>Pelin asetukset</h2>
+        <label for="numPlayers">Pelaajien määrä (3–8):</label>
+        <input type="number" id="numPlayers" min="3" max="8" value="4" placeholder="Syötä pelaajien määrä">
+        <div class="error-message" id="errorMessage"></div>
         <button onclick="startGame()">Aloita peli</button>
     </div>
 
     <div id="revealArea" style="display: none;">
+        <div class="progress-indicator" id="progressIndicator">Pelaaja <span id="currentPlayerNum">1</span> / <span id="totalPlayers">4</span></div>
         <button onclick="revealCard()" id="revealBtn">Näytä pelaajakorttini</button>
-        <div id="cardInfo" style="width: 75%;margin: 0 auto;"></div>
+        <div id="cardInfo" class="card-display" style="display: none;"></div>
+        <button class="secondary" onclick="resetGame()">Aloita alusta</button>
     </div>
 
     <div id="gameMessage" style="display: none;">
         <h2>Peli on alkanut!</h2>
         <p id="countdown">Aikaa jäljellä: 10:00</p>
+        <div class="player-info">
+            <p><strong>Muista:</strong></p>
+            <ul>
+                <li>Älä paljasta korttiasi muille pelaajille</li>
+                <li>Vastaa kysymyksiin roolisi mukaisesti</li>
+                <li>Huijari yrittää arvata paikan</li>
+                <li>Muut yrittävät paljastaa huijarin</li>
+            </ul>
+        </div>
+        <button class="secondary" onclick="resetGame()">Uusi peli</button>
     </div>
 
     <div id="examples" style="display: none;">
         <h2>Esimerkkikysymyksiä</h2>
-        <ul style="text-align:left; max-width: 300px; margin:auto;">
+        <ul>
             <li>Mitä sinä teet täällä?</li>
             <li>Mitä sinulla on päällä?</li>
             <li>Mitä näet ympärilläsi?</li>
             <li>Millainen tunnelma täällä on?</li>
+            <li>Miksi olet täällä?</li>
+            <li>Mikä on sinun työsi?</li>
         </ul>
     </div>
 
-    <div id="rules" style="margin-top: 25px;">
+    <div id="rules">
         <h2>Pelin säännöt</h2>
         <p><strong>Tavoite:</strong> Yrittäkää selvittää, kuka on huijari, ennen kuin aika loppuu.</p>
         <p><strong>Pelimekaniikka:</strong></p>
@@ -123,7 +378,8 @@
             <li>Muut pelaajat voittavat, jos huijari paljastetaan onnistuneesti.</li>
         </ul>
     </div>
-    <p style="font-weight: bold;">&copy Firesmith Studios</p>
+    
+    <p class="copyright">&copy; Firesmith Studios</p>
 
     <script>
         const gameData = {
@@ -134,11 +390,24 @@
         let currentPlayer = 0;
         let isCardShown = false;
         let numPlayers = 0;
+        let countdownInterval = null;
+
+        function showError(message) {
+            const errorDiv = document.getElementById("errorMessage");
+            errorDiv.textContent = message;
+            errorDiv.style.display = "block";
+            setTimeout(() => {
+                errorDiv.style.display = "none";
+            }, 3000);
+        }
 
         function startGame() {
-            numPlayers = parseInt(document.getElementById("numPlayers").value);
-            if (numPlayers < 3 || numPlayers > 8) {
-                alert("Pelaajien määrän tulee olla 3-8");
+            const input = document.getElementById("numPlayers");
+            numPlayers = parseInt(input.value);
+            
+            if (!numPlayers || numPlayers < 3 || numPlayers > 8) {
+                showError("Pelaajien määrän tulee olla 3-8");
+                input.focus();
                 return;
             }
 
@@ -151,13 +420,24 @@
                 players.push({ role: shuffledRoles[i % shuffledRoles.length], place: location.place });
             }
 
-            players.push({ role: "???", place: "???" }); // Huijari
+            players.push({ role: "HUIJARI", place: "???" }); // Huijari
             players.sort(() => 0.5 - Math.random());
+
+            currentPlayer = 0;
+            isCardShown = false;
 
             document.getElementById("startArea").style.display = "none";
             document.getElementById("rules").style.display = "none";
             document.getElementById("revealArea").style.display = "block";
             document.getElementById("examples").style.display = "block";
+            document.getElementById("backBtn").style.display = "block";
+            
+            updateProgressIndicator();
+        }
+
+        function updateProgressIndicator() {
+            document.getElementById("currentPlayerNum").textContent = currentPlayer + 1;
+            document.getElementById("totalPlayers").textContent = numPlayers;
         }
 
         function revealCard() {
@@ -173,30 +453,123 @@
                 }
 
                 const data = players[currentPlayer];
-                cardInfo.innerHTML = `<h2>Paikka: ${data.place}</h2><h3>Rooli: ${data.role}</h3>`;
-                btn.textContent = "Piilota pelaajakorttini";
+                const isImpostor = data.role === "HUIJARI";
+                
+                cardInfo.innerHTML = `
+                    <h3>${isImpostor ? '🎭 HUIJARI 🎭' : '📍 Paikka'}</h3>
+                    <h2>${data.place}</h2>
+                    <h3>${isImpostor ? 'Rooli' : '👤 Rooli'}</h3>
+                    <h2>${data.role}</h2>
+                    ${isImpostor ? '<p style="color: #ffcc00; font-weight: bold;">Yritä arvata paikka muiden keskustelujen perusteella!</p>' : ''}
+                `;
+                cardInfo.style.display = "block";
+                btn.textContent = "Piilota kortti ja anna seuraavalle";
                 isCardShown = true;
             } else {
-                cardInfo.innerHTML = `<h3>Ojenna puhelin seuraavalle pelaajalle</h3><p>Älä paljasta korttiasi muille!</p>`;
+                cardInfo.style.display = "none";
                 btn.textContent = "Näytä pelaajakorttini";
                 isCardShown = false;
                 currentPlayer++;
+                updateProgressIndicator();
+                
+                if (currentPlayer >= numPlayers) {
+                    btn.textContent = "Aloita peli";
+                }
             }
         }
 
         function startCountdown() {
-            let timer = 600;
+            let timer = 600; // 10 minutes in seconds
             const countdown = document.getElementById("countdown");
-            const interval = setInterval(() => {
+            
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            countdownInterval = setInterval(() => {
                 let minutes = Math.floor(timer / 60);
                 let seconds = timer % 60;
                 countdown.textContent = `Aikaa jäljellä: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                if (timer-- <= 0) {
-                    clearInterval(interval);
+                
+                if (timer <= 0) {
+                    clearInterval(countdownInterval);
                     countdown.textContent = "Aika on loppunut!";
+                    showGameEnd();
                 }
+                timer -= 1;
             }, 1000);
         }
+
+        function showGameEnd() {
+            const gameMessage = document.getElementById("gameMessage");
+            gameMessage.innerHTML = `
+                <div class="game-end">
+                    <h2>🎉 Peli päättyi! 🎉</h2>
+                    <p><strong>Aika on loppunut!</strong></p>
+                    <p>Nyt pelaajat äänestävät, kuka on huijari.</p>
+                    <div class="player-info">
+                        <p><strong>Muista:</strong></p>
+                        <ul>
+                            <li>Huijari voittaa, jos häntä ei äänestetä</li>
+                            <li>Muut voittavat, jos huijari paljastetaan</li>
+                            <li>Huijari voi myös voittaa arvaamalla paikan oikein</li>
+                        </ul>
+                    </div>
+                </div>
+                <button onclick="resetGame()">Uusi peli</button>
+            `;
+        }
+
+        function resetGame() {
+            // Clear any existing countdown
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            
+            // Reset all variables
+            players = [];
+            currentPlayer = 0;
+            isCardShown = false;
+            numPlayers = 0;
+            
+            // Show start area
+            document.getElementById("startArea").style.display = "block";
+            document.getElementById("rules").style.display = "block";
+            document.getElementById("revealArea").style.display = "none";
+            document.getElementById("examples").style.display = "none";
+            document.getElementById("gameMessage").style.display = "none";
+            document.getElementById("backBtn").style.display = "none";
+            
+            // Reset input
+            document.getElementById("numPlayers").value = "4";
+        }
+
+        function goBack() {
+            if (confirm("Haluatko varmasti poistua pelistä? Kaikki edistyminen menetetään.")) {
+                resetGame();
+            }
+        }
+
+        // Add keyboard support
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const activeElement = document.activeElement;
+                if (activeElement.id === 'numPlayers') {
+                    startGame();
+                }
+            }
+        });
+
+        // Add input validation
+        document.getElementById("numPlayers").addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value < 3 || value > 8) {
+                this.style.borderColor = '#ff4444';
+            } else {
+                this.style.borderColor = '#ff6b6b';
+            }
+        });
     </script>
 </body>
 </html>
