@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>King's Cup - Peli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2e;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+
+        .game-container {
+            background: #2e2e3e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 85%;
+            max-width: 600px;
+        }
+
+        .setup-area {
+            display: block;
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .card-area {
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        input, button {
+            width: 95%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        input {
+            background: #3e3e4e;
+            color: white;
+        }
+
+        button {
+            background: #ff6b6b;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff4f4f;
+            transform: translateY(-2px);
+        }
+
+        .player-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .player-tag {
+            background: #3e3e4e;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .player-tag:hover {
+            border-color: #ff6b6b;
+            background: #4e4e5e;
+        }
+
+        .remove-player {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .deck {
+            width: 140px;
+            height: 200px;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            border: 4px solid #ecf0f1;
+            border-radius: 15px;
+            margin: 25px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .deck:hover {
+            transform: scale(1.05);
+        }
+
+        .drawn-card {
+            width: 140px;
+            height: 200px;
+            background: white;
+            color: #2c3e50;
+            border: 4px solid #ecf0f1;
+            border-radius: 15px;
+            margin: 25px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-value {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .card-suit {
+            font-size: 2rem;
+            color: #e74c3c;
+        }
+
+        .card-rule {
+            background: #3e3e4e;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .kings-cup {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border: 4px solid #d35400;
+            border-radius: 50%;
+            margin: 25px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .current-player {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            padding: 15px 25px;
+            border-radius: 25px;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .game-info {
+            background: #3e3e4e;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .game-info p {
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .back-button {
+            background: #7f8c8d;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            background: #6c7b7d;
+        }
+
+        .instruction-text {
+            color: #bdc3c7;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        .customize-area {
+            display: none;
+        }
+
+        .card-customization {
+            background: #3e3e4e;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4e4e5e;
+        }
+
+        .card-preview {
+            width: 60px;
+            height: 80px;
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .card-preview .suit {
+            font-size: 1rem;
+            color: #e74c3c;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .rule-input {
+            width: 95%;
+            padding: 12px;
+            background: #2e2e3e;
+            color: white;
+            border: 2px solid #4e4e5e;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.4;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .rule-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .reset-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .reset-button:hover {
+            background: #c0392b;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .navigation-buttons button {
+            flex: 1;
+        }
+
+        .skip-customization {
+            background: #95a5a6;
+            margin-top: 15px;
+        }
+
+        .skip-customization:hover {
+            background: #7f8c8d;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>King's Cup</h1>
+
+    <!-- Setup Area -->
+    <div class="game-container setup-area" id="setupArea">
+        <h2>Pelin asetukset</h2>
+        <p class="instruction-text">Lisää pelaajat ja aloita peli. Tarvitset vähintään 2 pelaajaa.</p>
+        
+        <div>
+            <input type="text" id="playerName" placeholder="Kirjoita pelaajan nimi..." maxlength="20">
+            <button onclick="addPlayer()">➕ Lisää pelaaja</button>
+        </div>
+
+        <div class="player-list" id="playerList">
+            <!-- Players will be added here -->
+        </div>
+
+        <button onclick="startGame()" id="startButton" disabled>🎮 Aloita peli</button>
+    </div>
+
+    <!-- Customize Area -->
+    <div class="game-container customize-area" id="customizeArea">
+        <h2>🎛️ Muokkaa korttien sääntöjä</h2>
+        <p class="instruction-text">Voit muokata jokaisen kortin sääntöjä tai ohittaa tämän vaiheen käyttämällä oletussääntöjä.</p>
+        
+        <div id="cardCustomizations">
+            <!-- Card customizations will be added here -->
+        </div>
+
+        <button class="skip-customization" onclick="skipCustomization()">⏭️ Käytä oletussääntöjä</button>
+        
+        <div class="navigation-buttons">
+            <button onclick="backToSetup()">⬅️ Takaisin</button>
+            <button onclick="startGameWithCustomRules()">🎮 Aloita peli</button>
+        </div>
+    </div>
+
+    <!-- Game Area -->
+    <div class="game-container game-area" id="gameArea">
+        <h2>King's Cup</h2>
+        
+        <div class="current-player" id="currentPlayer">
+            🎯 Vuoro: <span id="currentPlayerName"></span>
+        </div>
+
+        <div class="kings-cup" id="kingsCup">
+            <div>👑 Kuningas</div>
+            <div id="kingsCount">0/4</div>
+        </div>
+
+        <div class="deck" id="deck" onclick="drawCard()">
+            <div>NOSTA</div>
+            <div>KORTTI</div>
+        </div>
+
+        <p class="instruction-text">Klikkaa korttipakkaa nostaaksesi kortin!</p>
+
+        <div class="game-info">
+            <p>📊 Kortteja jäljellä: <span id="cardsLeft">52</span></p>
+            <p>🍺 Kuningaskuppi: <span id="cupStatus">Tyhjä</span></p>
+        </div>
+
+        <button class="back-button" onclick="backToSetup()">⬅️ Takaisin asetuksiin</button>
+    </div>
+
+    <!-- Card Area -->
+    <div class="game-container card-area" id="cardArea">
+        <h2>🎴 Nostettu kortti</h2>
+        
+        <div class="drawn-card" id="drawnCard">
+            <div class="card-value" id="cardValue"></div>
+            <div class="card-suit" id="cardSuit"></div>
+        </div>
+
+        <div class="card-rule" id="cardRule">
+            <!-- Card rule will be displayed here -->
+        </div>
+
+        <button onclick="nextTurn()">⏭️ Seuraava vuoro</button>
+    </div>
+
+    <script>
+        // Game state
+        let players = [];
+        let currentPlayerIndex = 0;
+        let deck = [];
+        let kingsCup = [];
+        let drawnCard = null;
+        let gameActive = false;
+        let customRules = {};
+
+        // Card rules (Finnish)
+        const cardRules = {
+            '2': 'Anna huikka - Määrää huikka toiselle pelaajalle',
+            '3': 'Ota huikka - Ota itse huikka',
+            '4': 'Naiset - Kaikki naiset juovat yhden huikan',
+            '5': 'En ole koskaan - Pelaajat nostavat kolme sormea pystyyn ja kortin saanut pelaaja aloittaa kierroksen',
+            '6': 'Miehet - Kaikki miehet juovat yhden huikan',
+            '7': 'Taivas - Pelaajat nostavat kädet ylös mahdollisimman nopeasti, hitain pelaaja ottaa yhden huikan',
+            '8': 'Kaveri - Valitse itsellesi kaveri joka juo aina kun sinä juot',
+            '9': 'Riimi - Kortin nostanut sanoo sanan ja seuraavan pelaajan pitää keksiä rimmaava sana',
+            '10': 'Kategoriat - Kortin nostanut päättää kategorian, muiden pitää keksiä kategoriaan liittyviä sanoja',
+            'J': 'Sääntö - Kortin nostanut pelaaja saa keksiä säännön jota muiden on noudatettava',
+            'Q': 'Kysymysmestari - Kortin nostaneesta tulee kysymysmestari',
+            'K': 'Kuningas - Kaada juomastasi Kuninkaan keskimukiin. Viimeisen kuninkaan nostanut joutuu juoda keskimukin tyhjäksi',
+            'A': 'Vesiputous - Kortin saanut pelaaja alkaa juomaan, muut seuraavat myötäpäivään'
+        };
+
+        // Initialize deck
+        function initializeDeck() {
+            deck = [];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            const suits = ['♠', '♥', '♦', '♣'];
+            
+            for (let suit of suits) {
+                for (let value of values) {
+                    deck.push({ value, suit });
+                }
+            }
+            shuffleDeck();
+        }
+
+        // Shuffle deck
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        // Add player
+        function addPlayer() {
+            const input = document.getElementById('playerName');
+            const name = input.value.trim();
+            
+            if (name && name.length > 0 && players.length < 10) {
+                players.push(name);
+                input.value = '';
+                updatePlayerList();
+                updateStartButton();
+            }
+        }
+
+        // Remove player
+        function removePlayer(index) {
+            players.splice(index, 1);
+            updatePlayerList();
+            updateStartButton();
+        }
+
+        // Update player list display
+        function updatePlayerList() {
+            const playerList = document.getElementById('playerList');
+            playerList.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const playerTag = document.createElement('div');
+                playerTag.className = 'player-tag';
+                playerTag.innerHTML = `
+                    ${player}
+                    <button class="remove-player" onclick="removePlayer(${index})">×</button>
+                `;
+                playerList.appendChild(playerTag);
+            });
+        }
+
+        // Update start button state
+        function updateStartButton() {
+            const startButton = document.getElementById('startButton');
+            startButton.disabled = players.length < 2;
+        }
+
+        // Start game setup (go to customization)
+        function startGame() {
+            if (players.length < 2) return;
+            
+            document.getElementById('setupArea').style.display = 'none';
+            document.getElementById('customizeArea').style.display = 'block';
+            setupCardCustomizations();
+        }
+
+        // Setup card customizations
+        function setupCardCustomizations() {
+            const container = document.getElementById('cardCustomizations');
+            container.innerHTML = '';
+            
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            const suits = ['♠', '♥', '♦', '♣'];
+            
+            values.forEach(value => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-customization';
+                
+                const defaultRule = cardRules[value];
+                const currentRule = customRules[value] || defaultRule;
+                
+                cardDiv.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-preview">
+                            <div>${value}</div>
+                            <div class="suit">${suits[0]}</div>
+                        </div>
+                        <div class="card-title">Kortti ${value}</div>
+                        <button class="reset-button" onclick="resetCardRule('${value}')">🔄 Palauta</button>
+                    </div>
+                    <textarea class="rule-input" 
+                              placeholder="Kirjoita kortin ${value} sääntö..."
+                              onchange="updateCustomRule('${value}', this.value)">${currentRule}</textarea>
+                `;
+                
+                container.appendChild(cardDiv);
+            });
+        }
+
+        // Update custom rule
+        function updateCustomRule(cardValue, newRule) {
+            if (newRule.trim() === cardRules[cardValue]) {
+                delete customRules[cardValue];
+            } else {
+                customRules[cardValue] = newRule.trim();
+            }
+        }
+
+        // Reset card rule to default
+        function resetCardRule(cardValue) {
+            customRules[cardValue] = cardRules[cardValue];
+            setupCardCustomizations(); // Refresh the display
+        }
+
+        // Skip customization and start game
+        function skipCustomization() {
+            customRules = {};
+            startGameWithCustomRules();
+        }
+
+        // Start game with custom rules
+        function startGameWithCustomRules() {
+            gameActive = true;
+            currentPlayerIndex = 0;
+            kingsCup = [];
+            initializeDeck();
+            
+            document.getElementById('customizeArea').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            updateGameDisplay();
+        }
+
+        // Draw card
+        function drawCard() {
+            if (deck.length === 0) {
+                alert('Pakka on tyhjä! Peli päättyy.');
+                return;
+            }
+
+            drawnCard = deck.pop();
+            
+            // Handle King card
+            if (drawnCard.value === 'K') {
+                kingsCup.push(drawnCard);
+                if (kingsCup.length === 4) {
+                    alert('Neljäs kuningas nostettu! Peli päättyy.');
+                    gameActive = false;
+                }
+            }
+
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('cardArea').style.display = 'block';
+            displayCard();
+        }
+
+        // Display drawn card
+        function displayCard() {
+            document.getElementById('cardValue').textContent = drawnCard.value;
+            document.getElementById('cardSuit').textContent = drawnCard.suit;
+            
+            // Use custom rule if available, otherwise use default rule
+            const rule = customRules[drawnCard.value] || cardRules[drawnCard.value] || 'Sääntö puuttuu';
+            document.getElementById('cardRule').textContent = rule;
+        }
+
+        // Next turn
+        function nextTurn() {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            drawnCard = null;
+            
+            document.getElementById('cardArea').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            updateGameDisplay();
+        }
+
+        // Back to game
+        function backToGame() {
+            document.getElementById('cardArea').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+        }
+
+        // Back to setup
+        function backToSetup() {
+            gameActive = false;
+            players = [];
+            currentPlayerIndex = 0;
+            deck = [];
+            kingsCup = [];
+            drawnCard = null;
+            customRules = {};
+            
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('cardArea').style.display = 'none';
+            document.getElementById('customizeArea').style.display = 'none';
+            document.getElementById('setupArea').style.display = 'block';
+            
+            updatePlayerList();
+            updateStartButton();
+        }
+
+        // Update game display
+        function updateGameDisplay() {
+            document.getElementById('currentPlayerName').textContent = players[currentPlayerIndex];
+            document.getElementById('cardsLeft').textContent = deck.length;
+            document.getElementById('kingsCount').textContent = `${kingsCup.length}/4`;
+            
+            if (kingsCup.length === 0) {
+                document.getElementById('cupStatus').textContent = 'Tyhjä';
+            } else {
+                document.getElementById('cupStatus').textContent = `${kingsCup.length} kuningasta`;
+            }
+        }
+
+        // Enter key to add player
+        document.getElementById('playerName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addPlayer();
+            }
+        });
+
+        // Initialize
+        updateStartButton();
+    </script>
+</body>
+</html>

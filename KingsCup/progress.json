@@ -1,0 +1,51 @@
+{
+  "project": "King's Cup Game",
+  "version": "1.0.0",
+  "status": "In Development",
+  "last_updated": "2024-12-19",
+  "completed_features": [
+    "Basic game structure",
+    "Card deck implementation", 
+    "Game rules setup",
+    "Main HTML interface",
+    "Player management system",
+    "Card drawing mechanics",
+    "King's Cup tracking",
+    "Game state management",
+    "Responsive design"
+  ],
+  "in_progress": [
+    "Enhanced card interactions",
+    "Advanced game features"
+  ],
+  "todo": [
+    "Add sound effects",
+    "Add card flip animations",
+    "Implement specific card action mini-games",
+    "Add player statistics tracking",
+    "Add custom rule creation",
+    "Add game history",
+    "Add multiplayer support",
+    "Testing and bug fixes"
+  ],
+  "game_rules": {
+    "2": "Anna huikka - Määrää huikka toiselle pelaajalle",
+    "3": "Ota huikka - Ota itse huikka",
+    "4": "Naiset - Kaikki naiset juovat yhden huikan",
+    "5": "En ole koskaan - Pelaajat nostavat kolme sormea pystyyn ja kortin saanut pelaaja aloittaa kierroksen",
+    "6": "Miehet - Kaikki miehet juovat yhden huikan",
+    "7": "Taivas - Pelaajat nostavat kädet ylös mahdollisimman nopeasti, hitain pelaaja ottaa yhden huikan",
+    "8": "Kaveri - Valitse itsellesi kaveri joka juo aina kun sinä juot",
+    "9": "Riimi - Kortin nostanut sanoo sanan ja seuraavan pelaajan pitää keksiä rimmaava sana",
+    "10": "Kategoriat - Kortin nostanut päättää kategorian, muiden pitää keksiä kategoriaan liittyviä sanoja",
+    "J": "Sääntö - Kortin nostanut pelaaja saa keksiä säännön jota muiden on noudatettava",
+    "Q": "Kysymysmestari - Kortin nostaneesta tulee kysymysmestari",
+    "K": "Kuningas - Kaada juomastasi Kuninkaan keskimukiin. Viimeisen kuninkaan nostanut joutuu juoda keskimukin tyhjäksi",
+    "A": "Vesiputous - Kortin saanut pelaaja alkaa juomaan, muut seuraavat myötäpäivään"
+  },
+  "notes": [
+    "Game ends when 4th King is drawn",
+    "King's Cup collects drinks from all Kings",
+    "Last King drinker must drink the entire cup"
+  ]
+}
