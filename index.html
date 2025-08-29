@@ -248,6 +248,16 @@
                     </div>
                 </div>
                 
+                <div class="game-card" onclick="selectGame('skaalat')">
+                    <div class="game-icon">🎯</div>
+                    <h4>Skaalat</h4>
+                    <p>Arvauspeli intuitiolla</p>
+                    <div class="game-details">
+                        <span>2+ pelaajaa</span>
+                        <span>5-15 min</span>
+                    </div>
+                </div>
+                
                 <div class="game-card coming-soon" onclick="showComingSoon()">
                     <div class="game-icon">🎲</div>
                     <h4>Lisää pelejä</h4>
@@ -279,6 +289,9 @@
                     break;
                 case 'kingscup':
                     window.location.href = './KingsCup/index.html';
+                    break;
+                case 'skaalat':
+                    window.location.href = './Skaalat/index.html';
                     break;
                 default:
                     console.log('Unknown game type:', gameType);

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+    <html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Skaalat - Arvauspeli</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2e;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            color: #ff6b6b;
+            margin-top: 50px;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        h2 {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-bottom: 12px;
+            color: #ffcc00;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        h3 {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            margin-bottom: 8px;
+            color: #ffcc00;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        p {
+            margin: 8px 0;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        body div {
+            background: #2e2e3e;
+            padding: clamp(15px, 4vw, 25px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
+        }
+
+        input, button {
+            width: 100%;
+            max-width: 400px;
+            padding: clamp(10px, 3vw, 12px);
+            margin-top: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: all 0.3s ease;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        input {
+            background: #3e3e4e;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: #4e4e5e;
+        }
+
+        button {
+            background: #ff6b6b;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        button:hover {
+            background: #ff4f4f;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #4e4e5e;
+            margin-top: 8px;
+        }
+
+        button.secondary:hover {
+            background: #5e5e6e;
+        }
+
+        button.lock {
+            background: #ffcc00;
+            color: #333;
+        }
+
+        button.lock:hover {
+            background: #ffd700;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .number-btn {
+            background: #3e3e4e;
+            border: 2px solid #4e4e5e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-btn:hover {
+            background: #4e4e5e;
+            transform: scale(1.05);
+        }
+
+        .number-btn.selected {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            transform: scale(1.1);
+        }
+
+        .scale-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .scale-option {
+            background: #3e3e4e;
+            border: 2px solid #4e4e5e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .scale-option:hover {
+            background: #4e4e5e;
+        }
+
+        .scale-option.selected {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .game-info {
+            background: #3e3e4e;
+            padding: clamp(12px, 3vw, 15px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #ff6b6b;
+            width: 100%;
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+
+        .timer {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-top: 15px;
+            color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: #3e3e4e;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .stat-label {
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            color: rgb(216, 216, 216);
+            margin-top: 5px;
+        }
+
+        .target-display {
+            background: #4e4e5e;
+            padding: clamp(15px, 4vw, 20px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border: 2px solid #ffcc00;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            word-wrap: break-word;
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .instructions {
+            background: #3e3e4e;
+            padding: clamp(12px, 3vw, 15px);
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #ff6b6b;
+            width: 100%;
+            max-width: 400px;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+            line-height: 1.4;
+            color: rgb(216, 216, 216);
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0;
+            padding-left: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        ul li {
+            text-align: left;
+            color: rgb(216, 216, 216);
+            line-height: 1.4;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+                gap: 12px;
+            }
+            
+            body div {
+                width: 100%;
+                padding: clamp(12px, 3vw, 20px);
+                margin: 0;
+            }
+            
+            h1 {
+                margin-top: 40px;
+            }
+            
+            input, button {
+                max-width: 100%;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            ul, .game-info, .target-display, .instructions {
+                max-width: 100%;
+            }
+            
+            .number-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            
+            .number-btn {
+                padding: 12px;
+                min-height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 5px;
+            }
+            
+            body div {
+                padding: 12px;
+            }
+            
+            h1 {
+                margin-top: 35px;
+            }
+            
+            .number-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .number-btn {
+                padding: 10px;
+                min-height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="startScreen">
+            <h1>🎯 Skaalat</h1>
+            <p>Ultimaattinen arvauspeli, jossa intuitio kohtaa numerot!</p>
+            
+            <div class="instructions">
+                <h3>Miten pelataan:</h3>
+                <ul>
+                    <li>Yksi pelaaja on arvaaja</li>
+                    <li>Muut näkevät huippu salaisen numeron</li>
+                    <li>Arvaaja kysyy kysymyksiä ja valitsee vastausten perusteilla numeroita</li>
+                    <li>Ajan ja tarkkuutesi perusteella saat pisteitä.</li>
+                </ul>
+            </div>
+
+            <div class="scale-selector">
+                <div class="scale-option selected" data-scale="10">Skaala 1-10</div>
+                <div class="scale-option" data-scale="20">Skaala 1-20</div>
+                <div class="scale-option" data-scale="100">Skaala 1-100</div>
+            </div>
+
+            <button onclick="startGame()">Aloita peli</button>
+        </div>
+
+        <!-- Target Display Screen -->
+        <div id="targetScreen" class="hidden">
+            <h2>🎯 Salainen numero</h2>
+            <div class="target-display" id="targetNumber">?</div>
+            <p>Näytä tämä kaikille pelaajille PAITSI arvaajalle!</p>
+            <p><strong>Muista:</strong> Älä anna arvaajan nähdä tätä numeroa!</p>
+            <button onclick="showGuesserScreen()">Anna arvaajalle</button>
+            <button class="secondary" onclick="resetGame()">Uusi peli</button>
+        </div>
+
+        <!-- Guesser Screen -->
+        <div id="guesserScreen" class="hidden">
+            <h2>🔍 Sinun vuorosi arvata!</h2>
+            <div class="game-info">
+                <p>Kysy pelaajilta arvioida jotain asteikolla</p>
+                <p><strong>Esimerkkikysymyksiä:</strong></p>
+                <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                    <li>"Arvioi tämän huoneen tuoksu asteikolla 1-10"</li>
+                    <li>"Kuinka mukava tämä tuoli on?"</li>
+                    <li>"Arvioi lämpötila täällä"</li>
+                    <li>"Kuinka kova taustamelu on?"</li>
+                    <li>"Arvioi valaistuksen laatu"</li>
+                </ul>
+            </div>
+
+            <div class="number-grid" id="numberGrid"></div>
+
+            <div class="timer" id="gameTimer">Aika: 0:00</div>
+            
+            <div class="game-info">
+                <p>Nykyinen arvaus: <span id="currentGuess">Ei mitään</span></p>
+                <p>Arvauksia tehty: <span id="guessCount">0</span></p>
+            </div>
+
+            <button class="lock" onclick="lockInGuess()" id="lockBtn" disabled>Lukitse arvaus</button>
+            <button class="secondary" onclick="resetGame()">Lopeta peli</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden">
+            <h2>🏆 Pelin tulokset</h2>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="finalAccuracy">0%</div>
+                    <div class="stat-label">Tarkkuus</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalTime">0:00</div>
+                    <div class="stat-label">Käytetty aika</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="guessChanges">0</div>
+                    <div class="stat-label">Arvauksia yhteensä</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="finalScore">0</div>
+                    <div class="stat-label">Lopullinen pisteet</div>
+                </div>
+            </div>
+
+            <div class="game-info">
+                <p><strong>Kohdenumero:</strong> <span id="revealedTarget">?</span></p>
+                <p><strong>Sinun lopullinen arvaus:</strong> <span id="revealedGuess">?</span></p>
+            </div>
+
+            <button onclick="resetGame()">Uusi rundi?</button>
+        </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            scale: 10,
+            targetNumber: 0,
+            currentGuess: null,
+            guessHistory: [],
+            totalGuesses: 0,
+            startTime: null,
+            endTime: null,
+            isGameActive: false,
+            timerInterval: null
+        };
+
+        // Initialize the game
+        function initGame() {
+            // Load saved progress if exists
+            const savedProgress = localStorage.getItem('skaalatProgress');
+            if (savedProgress) {
+                try {
+                    const progress = JSON.parse(savedProgress);
+                    console.log('Loaded saved progress:', progress);
+                } catch (e) {
+                    console.log('No valid saved progress found');
+                }
+            }
+
+            // Set up scale selector
+            document.querySelectorAll('.scale-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.scale = parseInt(this.dataset.scale);
+                });
+            });
+        }
+
+        // Start the game
+        function startGame() {
+            gameState.targetNumber = Math.floor(Math.random() * gameState.scale) + 1;
+            gameState.startTime = new Date();
+            gameState.isGameActive = true;
+            
+            document.getElementById('targetNumber').textContent = gameState.targetNumber;
+            
+            showScreen('targetScreen');
+        }
+
+        // Show guesser screen
+        function showGuesserScreen() {
+            createNumberGrid();
+            showScreen('guesserScreen');
+            startTimer();
+        }
+
+        // Create number grid based on scale
+        function createNumberGrid() {
+            const grid = document.getElementById('numberGrid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= gameState.scale; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'number-btn';
+                btn.textContent = i;
+                btn.onclick = () => selectNumber(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        // Select a number
+        function selectNumber(num) {
+            // Remove previous selection
+            document.querySelectorAll('.number-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Select new number
+            event.target.classList.add('selected');
+            
+            gameState.currentGuess = num;
+            gameState.totalGuesses++; // Increment total guesses
+            
+            document.getElementById('currentGuess').textContent = num;
+            document.getElementById('lockBtn').disabled = false;
+            
+            // Update guess count display
+            document.getElementById('guessCount').textContent = gameState.totalGuesses;
+        }
+
+        // Lock in the guess
+        function lockInGuess() {
+            if (gameState.currentGuess === null) return;
+            
+            gameState.guessHistory.push({
+                guess: gameState.currentGuess,
+                timestamp: new Date()
+            });
+            
+            gameState.endTime = new Date();
+            gameState.isGameActive = false;
+            
+            // Stop the timer
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+            
+            calculateResults();
+            saveProgress();
+            showScreen('resultsScreen');
+        }
+
+        // Calculate game results
+        function calculateResults() {
+            const totalTime = Math.floor((gameState.endTime - gameState.startTime) / 1000);
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            const accuracy = calculateAccuracy();
+            const finalScore = calculateFinalScore(accuracy, totalTime, gameState.totalGuesses);
+            
+            document.getElementById('finalAccuracy').textContent = accuracy + '%';
+            document.getElementById('totalTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('guessChanges').textContent = gameState.totalGuesses;
+            document.getElementById('finalScore').textContent = finalScore;
+            document.getElementById('revealedTarget').textContent = gameState.targetNumber;
+            document.getElementById('revealedGuess').textContent = gameState.currentGuess;
+        }
+
+        // Calculate accuracy based on final guess
+        function calculateAccuracy() {
+            if (gameState.currentGuess === null) return 0;
+            
+            const difference = Math.abs(gameState.currentGuess - gameState.targetNumber);
+            const maxDifference = gameState.scale - 1;
+            const accuracy = Math.max(0, 100 - (difference / maxDifference) * 100);
+            
+            return Math.round(accuracy);
+        }
+
+        // Start the timer
+        function startTimer() {
+            const timerElement = document.getElementById('gameTimer');
+            const startTime = new Date();
+            
+            gameState.timerInterval = setInterval(() => {
+                const currentTime = new Date();
+                const elapsed = Math.floor((currentTime - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                
+                timerElement.textContent = `Aika: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Calculate final score
+        function calculateFinalScore(accuracy, timeSeconds, totalGuesses) {
+            // Base score from accuracy
+            let score = accuracy * 10;
+            
+            // Time bonus (faster = better)
+            const timeBonus = Math.max(0, 100 - timeSeconds);
+            score += timeBonus;
+            
+            // Penalty for too many guesses (each guess costs 3 points)
+            const guessPenalty = totalGuesses * 3;
+            score -= guessPenalty;
+            
+            return Math.max(0, Math.round(score));
+        }
+
+        // Show specific screen
+        function showScreen(screenId) {
+            document.querySelectorAll('body > div').forEach(div => {
+                div.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Reset the game
+        function resetGame() {
+            // Stop timer if running
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+            
+            gameState = {
+                scale: gameState.scale, // Keep the same scale
+                targetNumber: 0,
+                currentGuess: null,
+                guessHistory: [],
+                totalGuesses: 0,
+                startTime: null,
+                endTime: null,
+                isGameActive: false,
+                timerInterval: null
+            };
+            
+            document.getElementById('currentGuess').textContent = 'Ei mitään';
+            document.getElementById('guessCount').textContent = '0';
+            document.getElementById('lockBtn').disabled = true;
+            document.getElementById('gameTimer').textContent = 'Aika: 0:00';
+            
+            showScreen('startScreen');
+        }
+
+        // Save progress
+        function saveProgress() {
+            const progress = {
+                lastPlayed: new Date().toISOString(),
+                totalGames: parseInt(localStorage.getItem('skaalatTotalGames') || '0') + 1,
+                averageScore: calculateAverageScore(),
+                bestScore: Math.max(parseInt(localStorage.getItem('skaalatBestScore') || '0'), 
+                                  calculateFinalScore(calculateAccuracy(), 
+                                                    Math.floor((gameState.endTime - gameState.startTime) / 1000), 
+                                                    gameState.totalGuesses))
+            };
+            
+            localStorage.setItem('skaalatProgress', JSON.stringify(progress));
+            localStorage.setItem('skaalatTotalGames', progress.totalGames.toString());
+            localStorage.setItem('skaalatBestScore', progress.bestScore.toString());
+        }
+
+        // Calculate average score (placeholder)
+        function calculateAverageScore() {
+            return 0; // Would need to track all scores for this
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+
+        // Save progress when game ends
+        document.addEventListener('beforeunload', function() {
+            if (gameState.isGameActive) {
+                saveProgress();
+            }
+        });
+    </script>
+</body>
+</html>
